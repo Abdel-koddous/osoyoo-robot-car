@@ -8,7 +8,9 @@ long duration; // variable for the duration of sound wave travel
 int distance; // variable for the distance measurement
 auto timer = timer_create_default(); // create a timer with default settings
 
-
+unsigned long previousMillis = 0;
+unsigned long interval = 500;
+int a = 60;
 int getDistance()
 {
   // Clears the trigPin condition
@@ -44,7 +46,17 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT); // set LED pin to OUTPUT
   timer.every(500, getDistance);  
 }
-
 void loop() {
-  timer.tick(); // tick the timer
+  // put your main code here, to run repeatedly:
+      
+  unsigned long currentMillis = millis();
+  
+  if (currentMillis - previousMillis > interval) 
+  {
+    previousMillis = currentMillis;
+    Serial.println("Test");
+    Serial.println(previousMillis);
+    Serial.println(a);
+  }
+
 }
