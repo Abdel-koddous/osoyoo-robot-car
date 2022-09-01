@@ -11,7 +11,7 @@ int distance; // variable for the distance measurement
 
 unsigned long previousMillis = 0;
 unsigned long interval = 200;
-unsigned long ServoInterval = 100;
+unsigned long ServoInterval = 200;
 unsigned long ServoPreviousMillis = 0;
 unsigned char ServoAnglesIdx = 0;
 int numberOfAngles = 181;
@@ -66,11 +66,15 @@ void loop() {
     
     Serial.print("Angle => ");
     Serial.println(ServoAnglesIdx);
-    Serial.println(ServoAnglesIdx % numberOfAngles);
+    Serial.println(ServoAnglesIdx);
     //Serial.println(servoAngles[ServoAnglesIdx % numberOfAngles]);
 
-    Myservo.write(ServoAnglesIdx % numberOfAngles);
-    ServoAnglesIdx = ServoAnglesIdx + 1;
+    Myservo.write(ServoAnglesIdx);
+    ServoAnglesIdx = ServoAnglesIdx + 5;
+    if (ServoAnglesIdx > 180)
+    {
+      ServoAnglesIdx = 0;
+    }
   }
 
   if (currentMillis - previousMillis >= interval) 
