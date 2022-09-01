@@ -11,11 +11,10 @@ int distance; // variable for the distance measurement
 
 unsigned long previousMillis = 0;
 unsigned long interval = 200;
-unsigned long ServoInterval = 200;
+unsigned long ServoInterval = 100;
 unsigned long ServoPreviousMillis = 0;
 unsigned char ServoAnglesIdx = 0;
-int numberOfAngles = 181;
-//int servoAngles[numberOfAngles];
+int rotationSign = 1;
 
 int getDistance()
 {
@@ -37,13 +36,7 @@ int getDistance()
 
   return distance;
 }
-/*
-void getServoAngles()
-{
-  for (int angle = 0; angle <= 180; angle++) {
-    servoAngles[angle] = angle;
-}
-*/
+
 void setup() {
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an OUTPUT
   pinMode(echoPin, INPUT); // Sets the echoPin as an INPUT
@@ -53,13 +46,13 @@ void setup() {
 
   Myservo.attach(13);
   Myservo.write(180); // Setup intial position of the servo
-  //getServoAngles();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
   unsigned long currentMillis = millis();
   
+  // Servo Control Timer
   if (currentMillis - ServoPreviousMillis >= ServoInterval)
   {
     ServoPreviousMillis = currentMillis;
@@ -67,16 +60,18 @@ void loop() {
     Serial.print("Angle => ");
     Serial.println(ServoAnglesIdx);
     Serial.println(ServoAnglesIdx);
-    //Serial.println(servoAngles[ServoAnglesIdx % numberOfAngles]);
 
     Myservo.write(ServoAnglesIdx);
-    ServoAnglesIdx = ServoAnglesIdx + 5;
-    if (ServoAnglesIdx > 180)
+    // Updating servo angle
+    ServoAnglesIdx = ServoAnglesIdx + rotationSign * 5;
+    // Changing rotation sign when needed
+    if (ServoAnglesIdx >= 180  || ServoAnglesIdx <= 0)
     {
-      ServoAnglesIdx = 0;
+      rotationSign = -rotationSign;
     }
   }
 
+  // Ultrasonic Sensor Timer
   if (currentMillis - previousMillis >= interval) 
   {
     previousMillis = currentMillis;
@@ -88,7 +83,5 @@ void loop() {
     Serial.print("Servo ReadMicroseconds => ");
     Serial.println(Myservo.readMicroseconds());
   }
-
-
 
 }
