@@ -82,21 +82,24 @@ void go_Right(int t=0)  //Turn right
 
 
 void setup() {
+  /*
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an OUTPUT
   pinMode(echoPin, INPUT); // Sets the echoPin as an INPUT
+  Myservo.attach(13);
+  Myservo.write(0); // Setup intial position of the servo
+  */
   Serial.begin(9600); // // Serial Communication is starting with 9600 of baudrate speed
   Serial.println("Ultrasonic Sensor HC-SR04 Test"); // print some text in Serial Monitor
   Serial.println("with Arduino UNO R3");
 
-  Myservo.attach(13);
-  Myservo.write(0); // Setup intial position of the servo
   
   init_GPIO();
-  go_Right(2500);
+  go_Right(500);
   stop_Stop();//Stop
   
   delay(2000); // Wait for setup config to be applied
 }
+
 
 void loop() {
   // put your main code here, to run repeatedly:
