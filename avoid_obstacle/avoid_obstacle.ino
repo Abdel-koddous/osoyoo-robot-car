@@ -5,12 +5,14 @@ Servo Myservo;
 #define echoPin 2 // attach pin D2 Arduino to pin Echo of HC-SR04
 #define trigPin 1 //attach pin D3 Arduino to pin Trig of HC-SR04
 
-#define speedPinR 9    //  RIGHT PWM pin connect MODEL-X ENA
+#define speedPinR 4    //  RIGHT PWM pin connect MODEL-X ENA
 #define RightMotorDirPin1  12    //Right Motor direction pin 1 to MODEL-X IN1 
 #define RightMotorDirPin2  11    //Right Motor direction pin 2 to MODEL-X IN2
 #define speedPinL 6    // Left PWM pin connect MODEL-X ENB
 #define LeftMotorDirPin1  7    //Left Motor direction pin 1 to MODEL-X IN3 
 #define LeftMotorDirPin2  8   //Left Motor direction pin 1 to MODEL-X IN4 
+
+#define ServoPin 3
 
 // defines variables
 long duration; // variable for the duration of sound wave travel
@@ -56,7 +58,7 @@ void stop_Stop()    //Stop
 }
 
 //Pins initialize
-void init_GPIO()
+void init_MotorsGPIO()
 {
   pinMode(RightMotorDirPin1, OUTPUT); 
   pinMode(RightMotorDirPin2, OUTPUT); 
@@ -65,39 +67,41 @@ void init_GPIO()
   pinMode(LeftMotorDirPin1, OUTPUT);
   pinMode(LeftMotorDirPin2, OUTPUT); 
   pinMode(speedPinR, OUTPUT); 
-  //stop_Stop();
 }
 
-void go_Right(int t=0)  //Turn right
+void go_Left(int t=0)  //Turn right
 {
-  digitalWrite(RightMotorDirPin1, LOW);
-  digitalWrite(RightMotorDirPin2,HIGH);
-  digitalWrite(LeftMotorDirPin1,HIGH);
-  digitalWrite(LeftMotorDirPin2,LOW);
-  analogWrite(speedPinL,200);
-  analogWrite(speedPinR,200);
+  digitalWrite(RightMotorDirPin1, HIGH);
+  digitalWrite(RightMotorDirPin2,LOW);
+  digitalWrite(LeftMotorDirPin1,LOW);
+  digitalWrite(LeftMotorDirPin2,HIGH);
+  analogWrite(speedPinL,150);
+  analogWrite(speedPinR,150);
   delay(t);
 }
 
 
 
 void setup() {
-  /*
+  
+  init_MotorsGPIO();
+
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an OUTPUT
   pinMode(echoPin, INPUT); // Sets the echoPin as an INPUT
-  Myservo.attach(13);
+  
+
+  Myservo.attach(ServoPin);
   Myservo.write(0); // Setup intial position of the servo
-  */
+  
   Serial.begin(9600); // // Serial Communication is starting with 9600 of baudrate speed
   Serial.println("Ultrasonic Sensor HC-SR04 Test"); // print some text in Serial Monitor
   Serial.println("with Arduino UNO R3");
 
-  
-  init_GPIO();
-  go_Right(500);
+  delay(1000); // Wait for setup config to be applied
+
+  go_Left(660);
   stop_Stop();//Stop
   
-  delay(2000); // Wait for setup config to be applied
 }
 
 
@@ -139,7 +143,7 @@ void loop() {
       // Aligning Robot using Angle of Minimum Detected Distance
       if (alignRobot == true)
       {
-        go_Right(500);
+        go_Left(500);
         stop_Stop();//Stop
         alignRobot = false;
       }
