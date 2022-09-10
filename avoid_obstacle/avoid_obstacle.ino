@@ -99,8 +99,12 @@ void setup() {
 
   delay(1000); // Wait for setup config to be applied
 
-  go_Left(660);
-  stop_Stop();//Stop
+  for (int i = 0; i < 6; i++)
+  {
+    go_Left(290);
+    stop_Stop();//Stop
+    delay(3000);
+  }
   
 }
 
@@ -143,17 +147,13 @@ void loop() {
       // Aligning Robot using Angle of Minimum Detected Distance
       if (alignRobot == true)
       {
-        go_Left(500);
+        go_Left(380);
         stop_Stop();//Stop
         alignRobot = false;
       }
-    /*  
+    
       Serial.println("Starting The Scan in opposite direction...");
       minDistanceAngle[0] = 100;
     } 
-  }*/ 
-
-
-
-  
+  } */
 }
